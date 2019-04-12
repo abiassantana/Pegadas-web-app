@@ -1,19 +1,11 @@
 <template>
   <div id="app">
-    <cadDeveloper></cadDeveloper>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-import cadDeveloper from './components/cadDeveloper'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld,
-    cadDeveloper
-  }
+export default { 
 }
 </script>
 
