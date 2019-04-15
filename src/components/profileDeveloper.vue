@@ -64,15 +64,21 @@
 </template>
 
 <script>
+
 export default {
-    mounted() {
-    let menuAmburger = document.createElement('script')
-    let menuAmburgerPerfil = document.createElement('script')
-    menuAmburger.setAttribute('src', 'js/menuHamburger.js')
-    menuAmburgerPerfil.setAttribute('src', 'js/btnMenuHamburgerPerfil.js')
-    document.head.appendChild(menuAmburger)
-    document.head.appendChild(menuAmburgerPerfil)
-  }
+    mounted(){
+        this.$loadScript("js/menuHamburger.js")
+    .then(() => {
+      console.log('carregou1')
+    })
+        
+       this.$loadScript("js/btnMenuHamburgerPerfil.js")
+    .then(() => {
+      console.log('carregou2')
+    })
+    }
+    
+  
 }
 </script>
 

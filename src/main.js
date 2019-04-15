@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import LoadScript from 'vue-plugin-load-script';
 
 import cadDeveloper from './components/cadDeveloper.vue'
 import home from './components/home.vue'
@@ -14,6 +15,7 @@ import profileDev from './components/profileDeveloper.vue'
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueRouter)
+Vue.use(LoadScript)
 
 const routes = [
   {path: '/', name:'Home', component: home},
