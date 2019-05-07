@@ -1,5 +1,6 @@
 <template>
-    <body>
+    
+<body>
     <!-- Menu hamburger -->
     <header class="container-fluid header">
         <div class="row">
@@ -9,6 +10,7 @@
                     <div class="row">
                         <i class="fas fa-bars pl-3 pr-4 mb-n2 mt-n2 pt-3 pb-3"></i>
                         <a class="nav-link ml-n4" href="#" id="hamburger-title">Painel de Gerenciamento<br>De conta</a>
+
                     </div>
                 </button>
                 <!-- Itens menu hamburger -->
@@ -22,20 +24,21 @@
                         <li><a href="#" id="main-nav-alts"><i class="fas fa-lock mr-3"></i>Alterar Senha</a></li>
                         <!-- nome sa -->
                         <li><a href="#" id="main-nav-sair" @click.prevent="sair()"><i class="fas fa-door-open mr-3"></i>Sair</a></li>
+
                     </ul>
                 </div>
             </div>
             <!-- Nav itens -->
             <div class="col-9" id="brand-container">
                 <ul class="nav justify-content-center">
-                    <li class="nav-item">
+                   <li class="nav-item">
                         <a class="nav-link mr-5 ml-5 pr-3 pl-3 mt-3" href="/developer/perfil/listDevelopers">Desenvolvedores</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mr-5 ml-5  pr-3 pl-3 mt-3" href="#">Cadastrar Atividade</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mr-5 ml-5  pr-3 pl-3 mt-3" href="">Relatórios</a>
+                        <a class="nav-link mr-5 ml-5  pr-3 pl-3 mt-3" href="/developer/perfil/listGames">Relatorios</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mr-5 ml-5  pr-3 pl-3 pr-5 mt-3" href="#">Ajuda</a>
@@ -45,26 +48,78 @@
 
         </div>
     </header>
+    <!-- Table -->
+    <section id="tabela-dev" class="pt-5">
+        <h1 class="pt-5" id="title-table-dev">Painel de Desenvolvedores</h1>
+        <div class="table-responsive-lg">
+            <table class="table table-borderless mx-auto">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Jogos na plataforma</th>
+                        <th scope="col">Tipo de conta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="pt-5 pb-5" v-for="dev of devs" :key="dev.id">
+                        <td class="pt-3 pb-3 pl-0 pr-0" id="tbl">
+                            <img src="#">
+                        </td>
+                        <td class="pt-4 pb-4 pl-0 pr-0">{{dev.firstName}} {{dev.lastName}}</td>
+                        <td class="pt-4 pl-0 pr-0">8 jogos</td>
+                        <td class="pt-4 pl-0 pr-0">Desenvolvedor</td>
+                        <td class="pt-4 pl-0 pr-0" id="tbr">
+                            <button type="button" class="btn" @click.prevent="devDetalhes(dev)" data-toggle="modal" data-target="#exampleModalCenter">
+                                <img src="../../static/mensagem.png">
+                            </button>
+                        </td>
 
-    <section id="conteudo">
-        <div class="row mx-auto">
-            <div class="col-lg-6">
-                <img src="../../static/Grupo.png">
+                    </tr>
+                    <br>
+                </tbody>
+            </table>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content mx-auto">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <img class="mx-auto" src="#" id="modal-img-pf">
+                                </div>
+                            </div>
+                            <div class="row" id="modal-local">
+                                <div class="col-md-6">
+                                    <img src="../../static/marcador.png">
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>Recife</h5>
+                                </div>
+                            </div>
+                            <h3>Desenvolvedor</h3>
+                            <h2>8 jogos na plataforma</h2>
+                        </div>
+                        <div class="modal-footer">
+                            <h4 class="mx-auto">{{selectedDev.email}}</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6" style="padding-right: 5%;">
-                <h1>#Deixe a sua Pegada</h1>
-                <h2>O pegadas é um projeto sem fins lucrativos<br>Que atua diretamente com a sociedade, junte-se a nós .</h2>
-                <a class="btn btn-success btn-sm pt-0 pb-0" href="#" role="button">Cadastre<br>seu jogo!</a>
-            </div>
+
         </div>
-    </section> 
-    <!-- Scrip menu header -->
+    </section>
 </body>
 
 </template>
 
 <script>
-
+import axios from 'axios'
 export default {
     created(){
         const token = localStorage.getItem('token')
@@ -74,25 +129,28 @@ export default {
             this.$router.push('/developer')
         }
     },
+    data(){
+        return {
+            devs: [],
+            selectedDev: 'Nan'
+        }
+    },
     mounted(){
-        this.$loadScript("js/menuHamburger.js")
-    .then(() => {
-      console.log('carregou1')
-    })
-        
-       this.$loadScript("js/btnMenuHamburgerPerfil.js")
-    .then(() => {
-      console.log('carregou2')
-    })
+        axios.get('http://localhost:3000/developer/developers', {headers: {'x-access-token': localStorage.getItem('token')}}).then(resp =>{
+            console.log(resp)
+            this.devs = resp.data
+        })
     },
     methods: {
+        devDetalhes(dev){
+            this.selectedDev = dev
+            //console.log(this.selectedDev)
+        },
         sair(){
-            localStorage.setItem('token', '')
+            localStorage.setItem('token', 'vazio')
             this.$router.push('/developer')
         }
     }
-    
-  
 }
 </script>
 

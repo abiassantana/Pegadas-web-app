@@ -9,6 +9,7 @@
                     <div class="row">
                         <i class="fas fa-bars pl-3 pr-4 mb-n2 mt-n2 pt-3 pb-3"></i>
                         <a class="nav-link ml-n4" href="#" id="hamburger-title">Painel de Gerenciamento<br>De conta</a>
+
                     </div>
                 </button>
                 <!-- Itens menu hamburger -->
@@ -21,7 +22,8 @@
                         <!-- nome se -->
                         <li><a href="#" id="main-nav-alts"><i class="fas fa-lock mr-3"></i>Alterar Senha</a></li>
                         <!-- nome sa -->
-                        <li><a href="#" id="main-nav-sair" @click.prevent="sair()"><i class="fas fa-door-open mr-3"></i>Sair</a></li>
+                        <li><a href="#" id="main-nav-sair"><i class="fas fa-door-open mr-3"></i>Sair</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -35,7 +37,7 @@
                         <a class="nav-link mr-5 ml-5  pr-3 pl-3 mt-3" href="#">Cadastrar Atividade</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link mr-5 ml-5  pr-3 pl-3 mt-3" href="">Relatórios</a>
+                        <a class="nav-link mr-5 ml-5  pr-3 pl-3 mt-3" href="/developer/perfil/listGames">Relatórios</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mr-5 ml-5  pr-3 pl-3 pr-5 mt-3" href="#">Ajuda</a>
@@ -45,57 +47,81 @@
 
         </div>
     </header>
-
-    <section id="conteudo">
-        <div class="row mx-auto">
-            <div class="col-lg-6">
-                <img src="../../static/Grupo.png">
+    <!-- Table -->
+    <section id="table-relatorio" class="pt-5">
+        <div class="row">
+            <div class="col-lg-10">
+                <div class="table-responsive">
+                    <table class="table table-borderless mx-auto">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Número de acessos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="game of games" :key="game.id">
+                                <td class="pt-4 pb-4" id="trbl">{{game.name}}</td>
+                                <td class="pt-4 pb-4">Jogo</td>
+                                <td class="pt-4 pb-4"><i class="fas fa-wifi-1" id="estado-verde"></i></td>
+                                <td class="pt-4 pb-4" id="trbr">0</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="col-lg-6" style="padding-right: 5%;">
-                <h1>#Deixe a sua Pegada</h1>
-                <h2>O pegadas é um projeto sem fins lucrativos<br>Que atua diretamente com a sociedade, junte-se a nós .</h2>
-                <a class="btn btn-success btn-sm pt-0 pb-0" href="#" role="button">Cadastre<br>seu jogo!</a>
+            <div class="col-lg-2">
+                <div class="table-responsive">
+                    <table class="table table-borderless mx-auto">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr scope="col" style="background-color: #FFFFFF;"  v-for="game of games" :key="game.id">
+                                <td><i class="fas fa-wifi-1" id="estado-amarela"></i></td>
+                                <td>Análise</td>
+                            </tr>
+                            <!--  
+                            <tr scope="col" style="background-color: #FFFFFF;">
+                                <td><i class="fas fa-wifi-1" id="estado-amarela"></i></td>
+                                <td>Análise</td>
+                            </tr>
+                            <tr scope="col" style="background-color: #FFFFFF;">
+                                <td><i class="fas fa-wifi-1" id="estado-vermelha"></i></td>
+                                <td>Reprovado</td>
+                            </tr>-->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </section> 
-    <!-- Scrip menu header -->
+    </section>
 </body>
 
 </template>
-
 <script>
-
+import axios from 'axios'
 export default {
-    created(){
-        const token = localStorage.getItem('token')
-        if(token){
-            console.log('logado')
-        } else {
-            this.$router.push('/developer')
+    data(){
+        return {
+            games: [],
+            selectedGame: 'Nan'
         }
     },
     mounted(){
-        this.$loadScript("js/menuHamburger.js")
-    .then(() => {
-      console.log('carregou1')
-    })
-        
-       this.$loadScript("js/btnMenuHamburgerPerfil.js")
-    .then(() => {
-      console.log('carregou2')
-    })
+        axios.get('http://localhost:3000/game/games', {headers: {'x-access-token': localStorage.getItem('token')}}).then(resp =>{
+            console.log(resp)
+            this.games = resp.data
+        })
     },
-    methods: {
-        sair(){
-            localStorage.setItem('token', '')
-            this.$router.push('/developer')
-        }
-    }
-    
-  
 }
 </script>
-
 <style>
 /* -----------------------------------*/
 /* ---------->>> Navbar <<<-----------*/

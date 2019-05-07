@@ -93,6 +93,12 @@ export default {
                 console.log(e)
           })
         }
+  },
+  mounted(){
+      let token = localStorage.getItem('token')
+      if (token) {
+        this.$router.push('/developer/perfil')
+      }
   }
 }
 </script>
@@ -153,7 +159,7 @@ body {
 body {
     width: 100%;
     height: 100vh;
-    background-image: url(img/background/signin.png);
+    background-image: url(../../static/signin.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: 120% 100%;

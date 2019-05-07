@@ -11,6 +11,8 @@ import home from './components/home.vue'
 import homeDev from './components/homeDeveloper.vue'
 import loginDev from './components/loginDeveloper.vue'
 import profileDev from './components/profileDeveloper.vue'
+import profileDevListDev from './components/perfilDeveloperListDevs.vue'
+import profileDevListGames from './components/perfilDeveloperListGames.vue'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
@@ -22,8 +24,9 @@ const routes = [
   {path: '/developer/signup', name:'signupDev', component: cadDeveloper},
   {path: '/developer', name:'homeDev', component: loginDev},
   {path: '/developer/signin', name:'signinDev', component: loginDev},
-  {path: '/developer/perfil', name:'profileDev', component: profileDev}
-  
+  {path: '/developer/perfil', name:'profileDev', component: profileDev},
+  {path: '/developer/perfil/listDevelopers', name:'profileDevListDev', component: profileDevListDev},
+  {path: '/developer/perfil/listGames', name:'profileDevListGames', component: profileDevListGames},
 ]
 const router = new VueRouter({
   routes,
